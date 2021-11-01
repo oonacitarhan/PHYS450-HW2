@@ -1,5 +1,7 @@
 from qutip import *
 from math import *
+import numpy as np
+import scipy
 
 def q1():
     lambda1 = (1+1.0j)/sqrt(3)
@@ -8,7 +10,13 @@ def q1():
     dm_psi = ket2dm(psi)
     print("q1:")
     print("Relative entropy of coherence: ", entropy_vn(dm_psi, base=2))
-    print(dm_psi-qeye(4)*dm_psi)
+    dm_psi_arr = dm_psi.full(order='C')
+    l1_norm = 0
+    for i in range(len(dm_psi_arr)):
+        for j in range(len(dm_psi_arr[0])):
+            if not i == j:
+                l1_norm += np.abs(dm_psi_arr[i][j])
+    print("l1-norm of coherence: ", l1_norm)
 
 def main():
     print("")
